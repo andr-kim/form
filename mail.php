@@ -1,7 +1,7 @@
 <?php
-$name = $_POST['user-name'];
-$email = $_POST['user-email'];
-$text = $_POST['user-text'];
+$name = $_POST['user_name'];
+$email = $_POST['user_email'];
+$text = $_POST['user_text'];
 
 $name = htmlspecialchars($name);
 $email = htmlspecialchars($email);
@@ -18,11 +18,11 @@ $text = trim($text);
 if (mail("kimovskiy@gmail.com",
      "Pest Reject",
      "Имя: ".$name."\n".
-     "Телефон ".$email,
+     "Почта ".$email,
 		 "Сообщение: ".$text,
-     "From: script@mail.ru \r\n")
+     "From: script@gmail.com \r\n")
 ){
-     header("Location: /thank_you.html");
+     header("Location: /ok.html");
 }
 
 else {
