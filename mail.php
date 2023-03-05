@@ -20,7 +20,7 @@ if (mail("kimovskiy@gmail.com",
      "Имя: ".$name."\n".
      "Почта ".$email,
 		 "Сообщение: ".$text,
-     "From: script@gmail.com \r\n")
+     "From: kimovskiy@gmail.com \r\n")
 ){
      header("Location: /ok.html");
 }
