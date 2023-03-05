@@ -1,22 +1,54 @@
 <?php
-if(isset($_POST['submit'])){
-    $to = "kimovskiy@gmail.com";
-    $subject = "Новая заявка";
-    $name = $_POST['user_name'];
-    $email = $_POST['user_email'];
-    $message = $_POST['user_text'];
+if(isset($_POST['email'])) {
 
-    $headers = "From: " . $name . " <" . $email . ">\\r\\n";
-    $headers .= "Reply-To: " . $email . "\\r\\n";
+    $email_to = "kimovskiy@gmail.com";
+    $email_subject = "Сообщение с контактной формы";
 
-    $mail_body = "Имя: " . $name . "\\n";
-    $mail_body .= "Email: " . $email . "\\n";
-    $mail_body .= "Сообщение: " . $message . "\\n";
-
-    if(mail($to, $subject, $mail_body, $headers)){
-        echo "Ваше сообщение успешно отправлено.";
-    } else {
-        echo "Ошибка при отправке сообщения. Пожалуйста, попробуйте еще раз.";
+    function died($error) {
+        echo "К сожалению, обнаружены ошибки в форме. ";
+        echo "Эти ошибки перечислены ниже.<br /><br />";
+        echo $error."<br /><br />";
+        echo "Пожалуйста, исправьте ошибки и повторите отправку.<br /><br />";
+        die();
     }
+
+    if(!isset($_POST['name']) ||
+        !isset($_POST['email']) ||
+        !isset($_POST['message'])) {
+        died('К сожалению, обнаружены ошибки в форме.');
+    }
+
+    $name = $_POST['name'];
+    $email_from = $_POST['email'];
+    $message = $_POST['message'];
+
+    $error_message = "";
+
+  if(strlen($error_message) > 0) {
+    died($error_message);
+  }
+
+    $email_message = "Детали сообщения:\\n\\n";
+
+
+    function clean_string($string) {
+      $bad = array("content-type","bcc:","to:","cc:","href");
+      return str_replace($bad,"",$string);
+    }
+
+    $email_message .= "Имя: ".clean_string($name)."\\n";
+    $email_message .= "Email: ".clean_string($email_from)."\\n";
+    $email_message .= "Сообщение: ".clean_string($message)."\\n";
+
+
+    $headers = 'From: '.$email_from."\\r\\n".
+    'Reply-To: '.$email_from."\\r\\n" .
+    'X-Mailer: PHP/' . phpversion();
+    @mail($email_to, $email_subject, $email_message, $headers);
+?>
+
+Спасибо за отправку сообщения! Мы свяжемся с вами в ближайшее время.
+
+<?php
 }
 ?>
